@@ -64,6 +64,9 @@
                         if (!$create_comment_query) {
                             die("Query Failed" . mysqli_error($connection));
                         }
+
+                        $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = $the_post_id ";
+                        $update_comment_count = mysqli_query($connection, $query);
                     }
                 ?>
 
@@ -90,46 +93,37 @@
                 <hr>
 
                 <!-- Posted Comments -->
+                <h3>Comments</h3>
+
+                <?php
+                    $query = "SELECT * FROM comments WHERE comment_post_id = {$the_post_id} ";
+                    $query .= "AND comment_status = 'Approved' ";
+                    $query .= "ORDER BY comment_id DESC ";
+                    $select_comment_query = mysqli_query($connection, $query);
+                    if (!$select_comment_query) {
+                        die('Query failed' . mysqli_error($connection));
+                    }
+                    while($row = mysqli_fetch_array($select_comment_query)) {
+                        $comment_date = $row['comment_date'];
+                        $comment_content = $row['comment_content'];
+                        $comment_author = $row['comment_author'];
+ 
+                ?>
 
                 <!-- Comment -->
                 <div class="media">
                     <a class="pull-left" href="#">
-                        <img class="media-object" src="http://placehold.it/64x64" alt="">
+                        <img class="media-object" src="http://placehold.it/64x64" alt="Image">
                     </a>
                     <div class="media-body">
-                        <h4 class="media-heading">Start Bootstrap
-                            <small>August 25, 2014 at 9:30 PM</small>
+                        <h4 class="media-heading"><?= $comment_author ?>
+                            <small><?= $comment_date ?></small>
                         </h4>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        <?= $comment_content ?>
                     </div>
                 </div>
 
-                <!-- Comment -->
-                <div class="media">
-                    <a class="pull-left" href="#">
-                        <img class="media-object" src="http://placehold.it/64x64" alt="">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading">Start Bootstrap
-                            <small>August 25, 2014 at 9:30 PM</small>
-                        </h4>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        <!-- Nested Comment -->
-                        <div class="media">
-                            <a class="pull-left" href="#">
-                                <img class="media-object" src="http://placehold.it/64x64" alt="">
-                            </a>
-                            <div class="media-body">
-                                <h4 class="media-heading">Nested Start Bootstrap
-                                    <small>August 25, 2014 at 9:30 PM</small>
-                                </h4>
-                                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                            </div>
-                        </div>
-                        <!-- End Nested Comment -->
-                    </div>
-                </div>
-
+                <?php } ?>
 
             </div>
 
