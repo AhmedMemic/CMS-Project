@@ -11,6 +11,8 @@
 
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
+        <!-- <li><a href="#">Online users: <?//= users_online(); ?></a></li> -->
+        <li><a href="">Users Online: <span class="usersonline"></span></a></li>
         <li><a href="../index.php">Home Site</a></li>
 
         <li class="dropdown">

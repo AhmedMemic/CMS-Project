@@ -11,10 +11,32 @@
  
             <!-- Blog Entries Column -->
             <div class="col-md-8">
+                <h1 class="page-header">
+                    Page Heading
+                    <small>Secondary Text</small>
+                </h1>
 
-                <?php  
+                <?php
+
+                if(isset($_GET['page'])) {
+                    $page = $_GET['page'];
+                } else {
+                    $page = "";
+                }
+
+                if($page == "" || $page == 1) {
+                    $page_1 = 0;
+                } else {
+                    $page_1 = ($page * 5) - 5;
+                }
                 
-                $query = "SELECT * FROM posts ";
+                $posts_count_query = "SELECT * FROM posts ";
+                $find_count = mysqli_query($connection, $posts_count_query);
+                $count = mysqli_num_rows($find_count);
+                
+                $count = ceil($count / 5);
+                
+                $query = "SELECT * FROM posts LIMIT $page_1, 5 ";
                 $select_all_posts_query = mysqli_query($connection, $query);
                 while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
                     $post_id = $row["post_id"];
@@ -27,11 +49,6 @@
 
                     if($post_status == 'Published') {
                 ?>
-                
-                <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
-                </h1>
 
                 <!-- Blog Post -->
                 <h2>
@@ -60,6 +77,18 @@
         <!-- /.row -->
 
         <hr>
+
+        <ul class="pager">
+        <?php
+            for($i = 1; $i <= $count; $i++) {
+                if($i == $page) {
+                    echo "<li><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
+                } else {
+                echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
+                }
+            }
+        ?>
+        </ul>
 
         <!-- Footer -->
         <?php include "includes/footer.php"; ?>
