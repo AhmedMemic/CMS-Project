@@ -28,16 +28,31 @@
         $username = $_POST['username'];
         $user_email = $_POST['user_email'];
         $user_password = $_POST['user_password'];
-        $user_password = hash("gost", $user_password);
-        //$post_date = date('d-m-y');
 
         //move_uploaded_file($post_image_temp, "../images/$post_image");
+        
+        $query = "SELECT randSalt from users ";
+        $select_randSalt_query = mysqli_query($connection, $query);
+        if(!$select_randSalt_query) {
+            die("Query Failed." . mysqli_error($connection));
+        }
 
-        $query = "INSERT INTO users(user_firstname, user_lastname, user_role, username, user_email, user_password) ";
-        $query .= "VALUES('{$user_firstname}', '{$user_lastname}', '{$user_role}', '{$username}', '{$user_email}', '{$user_password}') ";
-        $add_user_query = mysqli_query($connection, $query);
+        $row = mysqli_fetch_array($select_randSalt_query);
+        $salt = $row['randSalt'];
+        $hashed_password = crypt($user_password, $salt);
 
-        confirmQuery($add_user_query); 
+        $query = "UPDATE users SET ";
+        $query .= "username = '{$username}', ";
+        $query .= "user_password = '{$hashed_password}', ";
+        $query .= "user_firstname = '{$user_firstname}', ";
+        $query .= "user_lastname = '{$user_lastname}', ";
+        $query .= "user_email = '{$user_email}', ";
+        $query .= "user_role = '{$user_role}' ";
+        $query .= "WHERE user_id = {$the_user_id} ";
+
+        $update_user = mysqli_query($connection, $query);
+
+        confirmQuery($update_user);
     }
 ?>
 
@@ -55,8 +70,8 @@
 
     <div class="form-group">
         <label for="user_role">Role</label>
-        <select name="user_role" class="form-control" id="user_role">
-            <option value=""><?= $user_role; ?></option>
+        <select name="user_role" class="form-control" id="">
+            <option value="<?= $user_role; ?>"><?= $user_role; ?></option>
             <?php
                 if($user_role == 'Admin') {
                     echo "<option value='Subscriber'>Subscriber</option>";

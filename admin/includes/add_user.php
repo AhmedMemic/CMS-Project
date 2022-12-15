@@ -10,7 +10,6 @@
         $username = $_POST['username'];
         $user_email = $_POST['user_email'];
         $user_password = $_POST['user_password'];
-        $user_password = hash("gost", $user_password);
         //$post_date = date('d-m-y');
 
         //move_uploaded_file($post_image_temp, "../images/$post_image");
@@ -20,6 +19,8 @@
         $add_user_query = mysqli_query($connection, $query);
 
         confirmQuery($add_user_query); 
+
+        echo "<mark>User Created: " . " " . "<a href='users.php'>View All Users</a></mark>";
     }
 ?>
 

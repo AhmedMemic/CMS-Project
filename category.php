@@ -16,9 +16,19 @@
                 
                 if(isset($_GET['category'])) {
                     $post_category_id = $_GET['category'];
-
                 }
+                ?>
 
+                <?php 
+                $query= "SELECT cat_title FROM categories WHERE cat_id = $post_category_id ";
+                $select_cat_title_query = mysqli_query($connection, $query);
+                $row = mysqli_fetch_assoc($select_cat_title_query);
+                $cat_title = $row['cat_title'];
+                ?>
+
+                <h1 class="page-header">All posts of the Category <small><?= $cat_title ?></small></h1>
+
+                <?php
                 $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id ";
                 $select_all_posts_query = mysqli_query($connection, $query);
                 while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
@@ -30,24 +40,19 @@
                     $post_content = substr($row["post_content"], 0, 100);
                 ?>
                 
-                <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
-                </h1>
-
                 <!-- Blog Post -->
                 <h2>
                     <a href="post.php?p_id=<?= $post_id; ?>"><?= $post_title ?></a>
                 </h2> 
                 <p class="lead">
-                    by <a href="index.php"><?= $post_author ?></a>
+                    by <a href="author_post.php?author=<?= $post_author ?>&p_id=<?= $post_id ?>"><?= $post_author ?></a>
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span><?= $post_date ?></p>
                 <hr>
                 <a href="post.php?p_id=<?= $post_id; ?>"><img class="img-responsive" src="images/<?= $post_image; ?>" alt=""></a>
                 <hr>
                 <p><?= $post_content ?></p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <a class="btn btn-primary" href="post.php?p_id=<?= $post_id; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                 <hr>
 
