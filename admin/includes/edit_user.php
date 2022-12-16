@@ -29,30 +29,34 @@
         $user_email = $_POST['user_email'];
         $user_password = $_POST['user_password'];
 
-        //move_uploaded_file($post_image_temp, "../images/$post_image");
-        
-        $query = "SELECT randSalt from users ";
-        $select_randSalt_query = mysqli_query($connection, $query);
-        if(!$select_randSalt_query) {
-            die("Query Failed." . mysqli_error($connection));
+        if(!empty($user_password)) {
+            $query_password = "SELECT user_password FROM users WHERE user_id = $the_user_id ";
+            $get_user_query = mysqli_query($connection, $query_password);
+            confirmQuery($get_user_query);
+
+            $row = mysqli_fetch_array($get_user_query);
+
+            $db_user_password = $row['user_password'];
+
+            if($db_user_password != $user_password) {
+                $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
+            }
+
+            $query = "UPDATE users SET ";
+            $query .= "username = '{$username}', ";
+            $query .= "user_password = '{$hashed_password}', ";
+            $query .= "user_firstname = '{$user_firstname}', ";
+            $query .= "user_lastname = '{$user_lastname}', ";
+            $query .= "user_email = '{$user_email}', ";
+            $query .= "user_role = '{$user_role}' ";
+            $query .= "WHERE user_id = {$the_user_id} ";
+
+            $update_user = mysqli_query($connection, $query);
+
+            confirmQuery($update_user);
+
+            echo "User Updated. " . "<a href='users.php'>View User?</a>";
         }
-
-        $row = mysqli_fetch_array($select_randSalt_query);
-        $salt = $row['randSalt'];
-        $hashed_password = crypt($user_password, $salt);
-
-        $query = "UPDATE users SET ";
-        $query .= "username = '{$username}', ";
-        $query .= "user_password = '{$hashed_password}', ";
-        $query .= "user_firstname = '{$user_firstname}', ";
-        $query .= "user_lastname = '{$user_lastname}', ";
-        $query .= "user_email = '{$user_email}', ";
-        $query .= "user_role = '{$user_role}' ";
-        $query .= "WHERE user_id = {$the_user_id} ";
-
-        $update_user = mysqli_query($connection, $query);
-
-        confirmQuery($update_user);
     }
 ?>
 
@@ -94,7 +98,7 @@
 
     <div class="form-group">
         <label for="user_password">Password</label>
-        <input type="password" value="<?= $user_password; ?>" class="form-control" name="user_password">
+        <input type="password" autocomplete="off" class="form-control" name="user_password">
     </div>
 
     <div>

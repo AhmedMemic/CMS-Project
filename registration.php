@@ -3,11 +3,15 @@
 
 <?php
 if(isset($_POST['submit'])) {
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     if(!empty($username) && !empty($email) && !empty($password)) {
+        $firstname = mysqli_real_escape_string($connection ,$firstname);
+        $lastname = mysqli_real_escape_string($connection ,$lastname);
         $username = mysqli_real_escape_string($connection ,$username);
         $email = mysqli_real_escape_string($connection ,$email);
         $password = mysqli_real_escape_string($connection, $password);
@@ -24,8 +28,8 @@ if(isset($_POST['submit'])) {
         $salt = $row['randSalt'];
         $password = crypt($password, $salt);
 */
-        $query = "INSERT INTO users (username, user_email, user_password, user_role) ";
-        $query .= "VALUES ('{$username}', '{$email}', '{$password}', 'Subscriber') ";
+        $query = "INSERT INTO users (user_firstname, user_lastname, username, user_email, user_password, user_role) ";
+        $query .= "VALUES ('{$firstname}', '{$lastname}', '{$username}', '{$email}', '{$password}', 'Subscriber') ";
         $register_user_query = mysqli_query($connection, $query);
         if(!$register_user_query) {
             die("Quwey Failed." . mysqli_error($connection) . " " . mysqli_errno($connection));
@@ -53,6 +57,14 @@ if(isset($_POST['submit'])) {
                 <h1>Register</h1>
                     <form role="form" action="registration.php" method="post" id="login-form" autocomplete="off">
                         <h5 class="text-center"><?= $message; ?></h5>
+                        <div class="form-group">
+                            <label for="firstname" class="sr-only">Firstname</label>
+                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter Your Firstname">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname" class="sr-only">Lastname</label>
+                            <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Enter Your Lastname">
+                        </div>
                         <div class="form-group">
                             <label for="username" class="sr-only">Username</label>
                             <input type="text" name="username" id="username" class="form-control" placeholder="Enter Desired Username">

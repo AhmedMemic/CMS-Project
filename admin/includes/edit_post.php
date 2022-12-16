@@ -69,6 +69,7 @@
     </div>
 
     <div class="form-group">
+    <label for="post_category_id">Category</label>
         <select name="post_category_id" id="post_category">
             
             <?php
@@ -90,7 +91,25 @@
 
     <div class="form-group">
         <label for="post_author">Post Author</label>
-        <input value="<?= $post_author; ?>" type="text" class="form-control" name="post_author">
+        <br>
+        <select name="post_author" id="post_author">
+            
+            <?php
+                $query = "SELECT * FROM users ";
+                $select_users = mysqli_query($connection, $query);
+
+                confirmQuery($select_users); 
+
+                while ($row = mysqli_fetch_assoc($select_users)) {
+                    $user_id = $row['user_id'];
+                    $user_firstname = $row['user_firstname'];
+                    $user_lastname = $row['user_lastname'];
+
+                    echo "<option value='{$user_firstname} {$user_lastname}'>{$user_firstname}" . " " ."{$user_lastname}</option>";
+                }
+            ?>
+
+        </select>
     </div>
 
     <div class="form-group">

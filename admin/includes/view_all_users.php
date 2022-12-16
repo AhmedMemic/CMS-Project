@@ -32,7 +32,7 @@
             
             echo "<tr>";
             echo "<td>{$user_id}</td>";
-            echo "<td>{$username}</td>";
+            echo "<td><a href='users.php?source=edit_user&edit_user={$user_id}'>{$username}<a></td>";
             echo "<td>{$user_firstname}</td>";
             echo "<td>{$user_lastname}</td>";
             echo "<td>{$user_email}</td>";
