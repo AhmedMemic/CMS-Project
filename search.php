@@ -14,7 +14,7 @@
             <div class="col-md-8">
             <?php 
                 if (isset($_POST["submit"])) {
-                    $search = $_POST["search"];
+                    $search = escape($_POST["search"]);
 
                     $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%'";
                     $search_query = mysqli_query($connection, $query);
@@ -27,6 +27,11 @@
                     if ($count == 0) {
                         echo "<h1>No Result</h1>";
                     } else {
+                        
+                        echo "<h1 class='page-header'>
+                        Page Heading
+                        <small>Secondary Text</small>
+                        </h1>";
 
                         while ($row = mysqli_fetch_assoc($search_query)) {
                             $post_title = $row["post_title"];
@@ -35,11 +40,6 @@
                             $post_image = $row["post_image"];
                             $post_content = $row["post_content"];
                         ?>
-                        
-                        <h1 class="page-header">
-                            Page Heading
-                            <small>Secondary Text</small>
-                        </h1>
 
                         <!-- Blog Post -->
                         <h2>
@@ -50,7 +50,7 @@
                         </p>
                         <p><span class="glyphicon glyphicon-time"></span><?= $post_date ?></p>
                         <hr>
-                        <img class="img-responsive" src="images/<?= $post_image; ?>" alt="">
+                        <img class="img-responsive" src="images/<?= $post_image; ?>" alt="Post image">
                         <hr>
                         <p><?= $post_content ?></p>
                         <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>

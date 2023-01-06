@@ -12,14 +12,15 @@
             <!-- Blog Entries Column -->
             <div class="col-md-8">
                 <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
+                    Welcome to the League of Legends Blog!
+                    <br>
+                    <small>Enjoy your time here</small>
                 </h1>
 
                 <?php
 
                 if(isset($_GET['page'])) {
-                    $page = $_GET['page'];
+                    $page = escape($_GET['page']);
                 } else {
                     $page = "";
                 }

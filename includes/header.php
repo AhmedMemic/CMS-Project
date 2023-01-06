@@ -1,4 +1,5 @@
 <?php session_start(); ?>
+<?php include "admin/functions.php"; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Blog Home - Start Bootstrap Template</title>
+    <title>Blog Home</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">

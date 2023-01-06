@@ -1,6 +1,6 @@
 <?php
     if (isset($_GET["p_id"])) {
-        $the_post_id = $_GET["p_id"];
+        $the_post_id = escape($_GET["p_id"]);
     }
 
     $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
@@ -20,14 +20,14 @@
     }
 
     if(isset($_POST["update_post"])) {
-        $post_author = $_POST["post_author"];
-        $post_title = $_POST["post_title"];
-        $post_category_id = $_POST["post_category_id"];
-        $post_status = $_POST["post_status"];
-        $post_image = $_FILES["post_image"]["name"];
-        $post_image_temp = $_FILES["post_image"]["tmp_name"];
-        $post_content = $_POST["post_content"];
-        $post_tags = $_POST["post_tags"];
+        $post_author = escape($_POST["post_author"]);
+        $post_title = escape($_POST["post_title"]);
+        $post_category_id = escape($_POST["post_category_id"]);
+        $post_status = escape($_POST["post_status"]);
+        $post_image = escape($_FILES["post_image"]["name"]);
+        $post_image_temp = escape($_FILES["post_image"]["tmp_name"]);
+        $post_content = escape($_POST["post_content"]);
+        $post_tags = escape($_POST["post_tags"]);
 
         move_uploaded_file($post_image_temp, "../images/$post_image");
         
@@ -99,7 +99,7 @@
                 $select_users = mysqli_query($connection, $query);
 
                 confirmQuery($select_users); 
-
+                echo "<option value='{$post_author}'>{$post_author}</option>";
                 while ($row = mysqli_fetch_assoc($select_users)) {
                     $user_id = $row['user_id'];
                     $user_firstname = $row['user_firstname'];
@@ -107,6 +107,7 @@
 
                     echo "<option value='{$user_firstname} {$user_lastname}'>{$user_firstname}" . " " ."{$user_lastname}</option>";
                 }
+                
             ?>
 
         </select>

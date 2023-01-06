@@ -3,18 +3,18 @@
 
 <?php
 if(isset($_POST['submit'])) {
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $firstname = escape($_POST['firstname']);
+    $lastname = escape($_POST['lastname']);
+    $username = escape($_POST['username']);
+    $email = escape($_POST['email']);
+    $password = escape($_POST['password']);
 
     if(!empty($username) && !empty($email) && !empty($password)) {
-        $firstname = mysqli_real_escape_string($connection ,$firstname);
-        $lastname = mysqli_real_escape_string($connection ,$lastname);
-        $username = mysqli_real_escape_string($connection ,$username);
-        $email = mysqli_real_escape_string($connection ,$email);
-        $password = mysqli_real_escape_string($connection, $password);
+        $firstname = escape($firstname);
+        $lastname = escape($lastname);
+        $username = escape($username);
+        $email = escape($email);
+        $password = escape($password);
     
         $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
 /*        
@@ -59,23 +59,23 @@ if(isset($_POST['submit'])) {
                         <h5 class="text-center"><?= $message; ?></h5>
                         <div class="form-group">
                             <label for="firstname" class="sr-only">Firstname</label>
-                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter Your Firstname">
+                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter Your Firstname" required>
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="sr-only">Lastname</label>
-                            <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Enter Your Lastname">
+                            <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Enter Your Lastname" required>
                         </div>
                         <div class="form-group">
                             <label for="username" class="sr-only">Username</label>
-                            <input type="text" name="username" id="username" class="form-control" placeholder="Enter Desired Username">
+                            <input type="text" name="username" id="username" class="form-control" placeholder="Enter Desired Username" required>
                         </div>
                          <div class="form-group">
                             <label for="email" class="sr-only">Email</label>
-                            <input type="email" name="email" id="email" class="form-control" placeholder="somebody@example.com">
+                            <input type="email" name="email" id="email" class="form-control" placeholder="somebody@example.com" required>
                         </div>
                          <div class="form-group">
                             <label for="password" class="sr-only">Password</label>
-                            <input type="password" name="password" id="key" class="form-control" placeholder="Password">
+                            <input type="password" name="password" id="key" class="form-control" placeholder="Password" required>
                         </div>
                 
                         <input type="submit" name="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">

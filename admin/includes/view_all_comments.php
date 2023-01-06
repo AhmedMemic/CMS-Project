@@ -32,16 +32,6 @@
             echo "<td>{$comment_id}</td>";
             echo "<td>{$comment_author}</td>";
             echo "<td>{$comment_content}</td>";
-
-            /*$query = "SELECT * FROM categories WHERE cat_id = $comment_post_id ";
-            $select_categories_id = mysqli_query($connection, $query);
-            while ($row = mysqli_fetch_assoc($select_categories_id)) {
-                $cat_id = $row['cat_id'];
-                $cat_title = $row['cat_title'];
-
-                echo "<td>{$cat_title}</td>";
-            }*/ 
-
             echo "<td>{$comment_email}</td>";
             echo "<td>{$comment_status}</td>";
 
@@ -68,7 +58,7 @@
 <?php 
 
     if (isset($_GET["approve"])) {
-        $the_comment_id = $_GET["approve"];
+        $the_comment_id = escape($_GET["approve"]);
 
         $query = "UPDATE comments SET comment_status = 'Approved' WHERE comment_id = $the_comment_id ";
         $unapprove_query = mysqli_query($connection, $query);
@@ -76,7 +66,7 @@
     }
 
     if (isset($_GET["unapprove"])) {
-        $the_comment_id = $_GET["unapprove"];
+        $the_comment_id = escape($_GET["unapprove"]);
 
         $query = "UPDATE comments SET comment_status = 'Unapproved' WHERE comment_id = $the_comment_id ";
         $unapprove_query = mysqli_query($connection, $query);
@@ -84,17 +74,10 @@
     }
 
     if (isset($_GET["delete"])) {
-        $the_comment_id = $_GET["delete"];
+        $the_comment_id = escape($_GET["delete"]);
 
         $query = "DELETE FROM comments WHERE comment_id = {$the_comment_id} ";
         $delete_query = mysqli_query($connection, $query);
         header("Location: comments.php");
     }
-    /*
-    if (isset($_GET["edit"])) {
-        $the_post_id = $_GET["edit"];
-
-        $query = "UPDATE FROM posts WHERE post_id = {$the_post_id} ";
-        $edit_query = mysqli_query($connection, $query);
-    } */
 ?>

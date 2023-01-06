@@ -14,8 +14,8 @@
 
                 <?php 
                 if(isset($_GET['p_id'])) {
-                    $the_post_id = $_GET['p_id'];
-                    $the_post_author = $_GET['author'];
+                    $the_post_id = escape($_GET['p_id']);
+                    $the_post_author = escape($_GET['author']);
                 }
                 ?> 
                 
@@ -51,10 +51,10 @@
                 <!-- Blog Comments -->
                 <?php
                     if(isset($_POST['create_comment'])) { 
-                        $the_post_id = $_GET['p_id'];
-                        $comment_author = $_POST['comment_author'];
-                        $comment_email = $_POST['comment_email'];
-                        $comment_content = $_POST['comment_content'];
+                        $the_post_id = escape($_GET['p_id']);
+                        $comment_author = escape($_POST['comment_author']);
+                        $comment_email = escape($_POST['comment_email']);
+                        $comment_content = escape($_POST['comment_content']);
 
                         if(!empty($comment_author) && !empty($comment_email) && !empty($comment_content)) {
 
